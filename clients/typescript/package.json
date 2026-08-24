@@ -1,0 +1,10 @@
+{
+  "name": "@happy-wakey/client",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": { ".": "./dist/client.js", "./node": "./dist/client.js", "./deno": "./dist/client.js", "./bun": "./dist/client.js", "./edge": "./dist/client.js" },
+  "scripts": { "build": "tsc", "test": "npm run build && node --test test/*.test.mjs" },
+  "dependencies": { "@oresoftware/next-loggers": "github:ores-otel/ores.otel.log#ca176fb6768a9750d262a536952268625ffd3a8a" },
+  "devDependencies": { "typescript": "^5.9.0" }
+}
+

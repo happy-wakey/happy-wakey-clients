@@ -1,0 +1,8 @@
+{
+  "name": "happy-wakey/client",
+  "description": "Contract-first Happy Wakey API client",
+  "license": "MIT",
+  "require": { "php": ">=8.2" },
+  "autoload": { "psr-4": { "HappyWakey\\": "src/" } }
+}
+

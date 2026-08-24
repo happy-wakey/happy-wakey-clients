@@ -1,0 +1,13 @@
+{
+  "schema": "happy-wakey/client-operations/v1",
+  "contract": "https://github.com/happy-wakey/happy-wakey-interfaces/blob/main/openapi/happy-wakey.openapi.json",
+  "operations": [
+    { "id": "health", "method": "GET", "path": "/healthz", "auth": false },
+    { "id": "listAlarms", "method": "GET", "path": "/v1/alarms", "auth": true },
+    { "id": "createAlarm", "method": "POST", "path": "/v1/alarms", "auth": true },
+    { "id": "transitionOccurrence", "method": "POST", "path": "/v1/occurrences/{occurrence_id}/transitions", "auth": true },
+    { "id": "pullChanges", "method": "GET", "path": "/v1/sync/pull", "auth": true },
+    { "id": "pushChanges", "method": "POST", "path": "/v1/sync/push", "auth": true }
+  ]
+}
+

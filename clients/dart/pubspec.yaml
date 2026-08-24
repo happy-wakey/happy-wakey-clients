@@ -1,0 +1,12 @@
+name: happy_wakey_client
+description: Contract-first Happy Wakey client for Dart and Flutter.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+dependencies:
+  oresoftware_next_loggers:
+    git:
+      url: https://github.com/ores-otel/ores.otel.log.git
+      ref: ca176fb6768a9750d262a536952268625ffd3a8a
+      path: sdk/dart

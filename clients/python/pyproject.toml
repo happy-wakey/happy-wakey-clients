@@ -1,0 +1,10 @@
+[project]
+name = "happy-wakey-client"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["oresoftware-next-loggers @ git+https://github.com/ores-otel/ores.otel.log.git@ca176fb6768a9750d262a536952268625ffd3a8a#subdirectory=sdk/python"]
+
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+

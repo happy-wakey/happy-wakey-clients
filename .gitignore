@@ -1,0 +1,11 @@
+**/target/
+**/build/
+**/.dart_tool/
+**/node_modules/
+**/__pycache__/
+**/.pytest_cache/
+**/.build/
+**/_build/
+*.log
+.DS_Store
+

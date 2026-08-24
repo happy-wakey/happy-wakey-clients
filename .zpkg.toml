@@ -1,0 +1,60 @@
+[package]
+org = "happy-wakey"
+name = "happy-wakey-clients"
+version = "0.1.0"
+description = "Contract-first Happy Wakey API clients for 16 languages"
+license = "MIT"
+
+[package.repository]
+vcs = "git"
+url = "https://github.com/happy-wakey/happy-wakey-clients"
+
+[dependencies]
+"happy-wakey/happy-wakey-interfaces" = "^0.1.0"
+"ores-otel/ores.otel.log" = "^0.1.0"
+
+[targets.repository]
+dir = "."
+
+[targets.c]
+dir = "clients/c"
+[targets.cpp]
+dir = "clients/cpp"
+[targets.zig]
+dir = "clients/zig"
+[targets.nodejs]
+dir = "clients/typescript"
+adapter = "node"
+[targets.python]
+dir = "clients/python"
+adapter = "python"
+[targets.golang]
+dir = "clients/go"
+adapter = "go"
+[targets.ruby]
+dir = "clients/ruby"
+[targets.php]
+dir = "clients/php"
+[targets.rust]
+dir = "clients/rust"
+adapter = "rust"
+[targets.rust-wasm]
+dir = "clients/wasm"
+adapter = "rust"
+[targets.dart]
+dir = "clients/dart"
+adapter = "dart"
+[targets.gleam]
+dir = "clients/gleam"
+[targets.erlang]
+dir = "clients/erlang"
+[targets.elixir]
+dir = "clients/elixir"
+[targets.java]
+dir = "clients/java"
+adapter = "java"
+[targets.kotlin]
+dir = "clients/kotlin"
+[targets.swift]
+dir = "clients/swift"
+

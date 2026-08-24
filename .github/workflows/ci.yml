@@ -1,0 +1,38 @@
+name: client matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/validate_matrix.py
+      - run: python -m unittest discover -s tests -p '*_test.py'
+
+  native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: cargo test --manifest-path clients/rust/Cargo.toml
+      - run: go test ./...
+        working-directory: clients/go
+      - run: npm install && npm test
+        working-directory: clients/typescript

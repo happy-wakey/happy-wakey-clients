@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "targets": {
+    "c": ["clients/c", "CMakeLists.txt", "include/happy_wakey/client.h"],
+    "cpp": ["clients/cpp", "CMakeLists.txt", "include/happy_wakey/client.hpp"],
+    "zig": ["clients/zig", "build.zig", "src/root.zig"],
+    "typescript": ["clients/typescript", "package.json", "src/client.ts"],
+    "python": ["clients/python", "pyproject.toml", "src/happy_wakey_client/client.py"],
+    "go": ["clients/go", "go.mod", "client.go"],
+    "ruby": ["clients/ruby", "happy-wakey-client.gemspec", "lib/happy_wakey_client.rb"],
+    "php": ["clients/php", "composer.json", "src/Client.php"],
+    "rust": ["clients/rust", "Cargo.toml", "src/lib.rs"],
+    "rust-wasm": ["clients/wasm", "Cargo.toml", "src/lib.rs"],
+    "dart": ["clients/dart", "pubspec.yaml", "lib/happy_wakey_client.dart"],
+    "gleam": ["clients/gleam", "gleam.toml", "src/happy_wakey_client.gleam"],
+    "erlang": ["clients/erlang", "rebar.config", "src/happy_wakey_client.erl"],
+    "elixir": ["clients/elixir", "mix.exs", "lib/happy_wakey_client.ex"],
+    "java": ["clients/java", "pom.xml", "src/main/java/dev/happywakey/HappyWakeyClient.java"],
+    "kotlin": ["clients/kotlin", "build.gradle.kts", "src/main/kotlin/dev/happywakey/HappyWakeyClient.kt"],
+    "swift": ["clients/swift", "Package.swift", "Sources/HappyWakeyClient/HappyWakeyClient.swift"]
+  },
+  "typescript_runtimes": ["node", "deno", "bun", "edge"]
+}
+

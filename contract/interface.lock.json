@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/happy-wakey/happy-wakey-interfaces.git",
+  "commit": "cb8d8128c7a3d50f813a05e68451c2e3b292c59c",
+  "openapi": "openapi/happy-wakey.openapi.json",
+  "schemas": [
+    "schemas/alarm.schema.json",
+    "schemas/alarm-occurrence.schema.json",
+    "schemas/sync-envelope.schema.json",
+    "schemas/error.schema.json"
+  ]
+}
+

@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.16)
+project(happy_wakey_client_cpp CXX)
+add_library(happy_wakey_client_cpp INTERFACE)
+target_include_directories(happy_wakey_client_cpp INTERFACE include)
+target_compile_features(happy_wakey_client_cpp INTERFACE cxx_std_20)
+add_executable(happy_wakey_client_cpp_smoke tests/smoke.cpp)
+target_link_libraries(happy_wakey_client_cpp_smoke PRIVATE happy_wakey_client_cpp)

@@ -1,0 +1,2 @@
+{application, happy_wakey_client, [{vsn, "0.1.0"}, {modules, [happy_wakey_client]}, {applications, [kernel, stdlib]}]}.
+
