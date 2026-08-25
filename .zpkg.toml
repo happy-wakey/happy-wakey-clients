@@ -11,7 +11,7 @@ url = "https://github.com/happy-wakey/happy-wakey-clients"
 
 [dependencies]
 "happy-wakey/happy-wakey-interfaces" = "^0.1.0"
-"ores-otel/ores.otel.log" = "^0.1.0"
+"oresoftware/next-loggers" = "^0.1.0"
 
 [targets.repository]
 dir = "."
@@ -57,4 +57,3 @@ adapter = "java"
 dir = "clients/kotlin"
 [targets.swift]
 dir = "clients/swift"
-

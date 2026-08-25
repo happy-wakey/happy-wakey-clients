@@ -50,7 +50,6 @@ for every target.
 ```sh
 python3 scripts/validate_matrix.py
 RUSTUP_TOOLCHAIN=stable cargo test --manifest-path clients/rust/Cargo.toml
-go test ./clients/go/...
+(cd clients/go && go test ./...)
 npm --prefix clients/typescript test
 ```
-

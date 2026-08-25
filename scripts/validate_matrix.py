@@ -30,7 +30,7 @@ for name, (directory, manifest, source) in matrix["targets"].items():
     assert "authorization" in text.lower() or "bearer" in text.lower() or name == "rust-wasm", f"{name}: bearer contract missing"
 
 manifest = (ROOT / ".zpkg.toml").read_text(encoding="utf-8")
-for dependency in ("happy-wakey/happy-wakey-interfaces", "ores-otel/ores.otel.log"):
+for dependency in ("happy-wakey/happy-wakey-interfaces", "oresoftware/next-loggers"):
     assert dependency in manifest
 assert "cb8d8128c7a3d50f813a05e68451c2e3b292c59c" in (ROOT / "contract/interface.lock.json").read_text()
 print(f"validated {len(matrix['targets'])} client slices, {len(operations)} operations, four TypeScript runtimes, contract pin, and Ores telemetry bridges")
