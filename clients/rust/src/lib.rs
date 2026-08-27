@@ -14,6 +14,8 @@ use url::Url;
 pub enum ClientError {
     #[error("HTTPS is required outside an explicitly enabled loopback environment")]
     HttpsRequired,
+    #[error("public IP literals are not allowed")]
+    PublicIpHost,
     #[error("a Shared Auth bearer token is required")]
     MissingToken,
     #[error("invalid base URL: {0}")]
@@ -48,7 +50,11 @@ impl HappyWakeyClient {
         allow_insecure_loopback: bool,
     ) -> Result<Self, ClientError> {
         let mut base = Url::parse(base)?;
-        let loopback = matches!(base.host_str(), Some("localhost" | "127.0.0.1" | "::1"));
+        let host = base.host_str().map(canonicalize_host);
+        let loopback = matches!(host, Some("localhost" | "127.0.0.1" | "::1"));
+        if host.is_some_and(is_public_numeric_host) {
+            return Err(ClientError::PublicIpHost);
+        }
         if base.scheme() != "https" && !(allow_insecure_loopback && loopback) {
             return Err(ClientError::HttpsRequired);
         }
@@ -196,6 +202,20 @@ impl HappyWakeyClient {
     }
 }
 
+fn canonicalize_host(host: &str) -> &str {
+    host.strip_prefix('[')
+        .and_then(|inner| inner.strip_suffix(']'))
+        .unwrap_or(host)
+}
+
+fn is_public_numeric_host(host: &str) -> bool {
+    let host = canonicalize_host(host);
+    if matches!(host, "127.0.0.1" | "localhost" | "::1") {
+        return false;
+    }
+    host.parse::<std::net::IpAddr>().is_ok() || host.contains(':')
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -204,6 +224,10 @@ mod tests {
         assert!(matches!(
             HappyWakeyClient::new("http://example.com", None, None),
             Err(ClientError::HttpsRequired)
+        ));
+        assert!(matches!(
+            HappyWakeyClient::new("https://98.90.186.114", None, None),
+            Err(ClientError::PublicIpHost)
         ));
         assert!(HappyWakeyClient::new_with_loopback_policy(
             "http://127.0.0.1:8120",

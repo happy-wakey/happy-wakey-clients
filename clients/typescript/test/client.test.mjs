@@ -2,6 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { HappyWakeyClient } from "../dist/client.js";
 
+test("rejects public IP literals", () => {
+  assert.throws(
+    () => new HappyWakeyClient({ baseUrl: "https://98.90.186.114" }),
+    /public IP literals are not allowed/,
+  );
+});
+
 test("uses bearer auth without logging it", async () => {
   const records = [];
   const event = { addFields(fields) { records.push(fields); return this; }, addTags() { return this; }, send() {} };

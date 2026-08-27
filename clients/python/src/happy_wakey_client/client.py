@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from urllib.parse import quote, urlencode, urljoin, urlparse
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 from urllib.error import HTTPError
@@ -15,7 +16,14 @@ class HappyWakeyError(RuntimeError):
 class HappyWakeyClient:
     def __init__(self, base_url: str, token: str | None = None, logger=None, allow_insecure_loopback: bool = False):
         parsed = urlparse(base_url)
-        if parsed.scheme != "https" and not (allow_insecure_loopback and parsed.hostname in {"localhost", "127.0.0.1", "::1"}):
+        host = (parsed.hostname or "").lower()
+        if host.startswith("[") and host.endswith("]"):
+            host = host[1:-1]
+        loopback = host in {"localhost", "127.0.0.1", "::1"}
+        numeric_ip = bool(re.fullmatch(r"(?:\d{1,3}\.){3}\d{1,3}", host) or ":" in host)
+        if numeric_ip and not loopback:
+            raise ValueError("public IP literals are not allowed")
+        if parsed.scheme != "https" and not (allow_insecure_loopback and loopback):
             raise ValueError("HTTPS required")
         self.base_url, self.token, self.logger = base_url.rstrip("/") + "/", token, logger
         self.opener = build_opener(HTTPRedirectHandler())

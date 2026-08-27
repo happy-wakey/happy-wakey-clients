@@ -24,7 +24,11 @@ export class HappyWakeyClient {
   readonly #fetch: typeof fetch;
   constructor(options: ClientOptions) {
     this.#base = new URL(options.baseUrl);
-    const loopback = ["localhost", "127.0.0.1", "::1"].includes(this.#base.hostname);
+    let host = this.#base.hostname.toLowerCase();
+    if (host.startsWith("[") && host.endsWith("]")) host = host.slice(1, -1);
+    const loopback = ["localhost", "127.0.0.1", "::1"].includes(host);
+    const numericIp = /^(?:\d{1,3}\.){3}\d{1,3}$/.test(host) || host.includes(":");
+    if (numericIp && !loopback) throw new TypeError("public IP literals are not allowed");
     if (this.#base.protocol !== "https:" && !(options.allowInsecureLoopback && loopback)) throw new TypeError("HTTPS required");
     this.#token = options.token;
     this.#logger = options.logger;
