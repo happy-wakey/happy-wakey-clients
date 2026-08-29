@@ -9,6 +9,10 @@ test("rejects public IP literals", () => {
   );
 });
 
+test("loopback IPv6 is allowed and is not treated as a public IP", () => {
+  assert.doesNotThrow(() => new HappyWakeyClient({ baseUrl: "https://[::1]" }));
+});
+
 test("uses bearer auth without logging it", async () => {
   const records = [];
   const event = { addFields(fields) { records.push(fields); return this; }, addTags() { return this; }, send() {} };
