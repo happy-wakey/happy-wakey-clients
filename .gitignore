@@ -5,6 +5,7 @@
 **/__pycache__/
 **/.pytest_cache/
 **/.build/
+**/.gradle/
 **/_build/
 **/.zig-cache/
 **/zig-out/
