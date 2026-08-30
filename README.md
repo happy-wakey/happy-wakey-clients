@@ -53,3 +53,10 @@ RUSTUP_TOOLCHAIN=stable cargo test --manifest-path clients/rust/Cargo.toml
 (cd clients/go && go test ./...)
 npm --prefix clients/typescript test
 ```
+# Functional and reactive TypeScript surface
+
+The TypeScript client keeps URL validation and request construction as pure
+transformations with explicit typed inputs and results. Effects stay inside the
+HTTP/Ores adapter. Its optional RxJS API exposes cold request streams and
+non-overlapping `exhaustMap` polling with explicit `AbortSignal` cancellation;
+it never stores bearer credentials or application state in a Subject.
