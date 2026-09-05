@@ -22,3 +22,7 @@ env/dec
 env/dec/
 /env/dec/
 # END ores-sops dotenv policy
+
+# Local temporary directories and repository-owned worktrees
+tmp/
+temp/
