@@ -5,6 +5,18 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def repo_local_path(relative: str) -> Path:
+    path = Path(relative)
+    if path.is_absolute() or not path.parts or any(part in (".", "..") for part in path.parts):
+        raise ValueError("SDK matrix paths must be repository-relative")
+    resolved = (ROOT / path).resolve()
+    if not resolved.is_relative_to(ROOT):
+        raise ValueError("SDK matrix path escapes repository")
+    return resolved
+
+
 matrix = json.loads((ROOT / "clients/sdk-matrix.json").read_text())
 operations = json.loads((ROOT / "contract/operations.json").read_text())["operations"]
 operation_tokens = {
@@ -18,9 +30,9 @@ operation_tokens = {
 
 assert len(matrix["targets"]) >= 17
 for name, (directory, manifest, source) in matrix["targets"].items():
-    package = ROOT / directory
-    assert (package / manifest).is_file(), f"{name}: missing {manifest}"
-    source_path = package / source
+    package = repo_local_path(directory)
+    assert repo_local_path(str(Path(directory) / manifest)).is_file(), f"{name}: missing {manifest}"
+    source_path = repo_local_path(str(Path(directory) / source))
     assert source_path.is_file(), f"{name}: missing {source}"
     text = source_path.read_text(encoding="utf-8")
     for operation in operations:
@@ -34,3 +46,11 @@ for dependency in ("happy-wakey/happy-wakey-interfaces", "oresoftware/next-logge
     assert dependency in manifest
 assert "cb8d8128c7a3d50f813a05e68451c2e3b292c59c" in (ROOT / "contract/interface.lock.json").read_text()
 print(f"validated {len(matrix['targets'])} client slices, {len(operations)} operations, four TypeScript runtimes, contract pin, and Ores telemetry bridges")
+
+# Negative contract checks are part of the normal CI validation lane.
+for invalid in ("../outside", "/tmp/outside", "clients/../../outside"):
+    try:
+        repo_local_path(invalid)
+    except ValueError:
+        continue
+    raise AssertionError(f"unsafe SDK matrix path admitted: {invalid}")
