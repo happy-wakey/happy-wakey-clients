@@ -22,3 +22,26 @@ exercise negative drift cases. These are **host-side static conformance tests**,
 not guest compilation or execution. No end-to-end Atto runtime support is
 claimed until a tested transport adapter and independent compiler evidence
 exist.
+
+## Rust host-contract prototype
+
+The standalone Rust crate at `rust-host/` provides a pinned six-operation
+request planner, an immutable validated origin, and a pluggable transport
+interface. It encodes occurrence IDs and cursors safely, checks the required
+request shape for alarms and transitions, caps buffered request/response
+sizes, refuses redirects, rejects duplicate JSON response keys and reports
+credential-free telemetry.
+
+Run the **Rust-only Atto test suite** with:
+
+```sh
+cargo test --manifest-path clients/rust/Cargo.toml --test atto_contract
+cargo test --manifest-path clients/atto/rust-host/Cargo.toml
+```
+
+The host crate does **not implement an HTTP transport**, does **not compile
+or execute .atto code**, and does not replace the full authoritative JSON
+Schema validator. The production Transport must independently enforce TLS,
+DNS/egress restrictions, redirects, per-request timeouts, cancellation and
+streaming byte caps *before* returning a buffered response. Do not admit
+production use until compiler and wire-conformance evidence exists.
