@@ -225,8 +225,9 @@ fn rejects_redirects_and_http_failures_without_body_leakage() {
     let (result,_) = attempt(Response {
         status:401,content_type:"application/json".into(),bytes:b"\"TOKEN PRIVATE\"".to_vec()
     });
-    assert_eq!(result.unwrap_err(),ClientError::HttpStatus(401));
-    assert!(!format!("{:?}",result).contains("PRIVATE"));
+    let error = result.unwrap_err();
+    assert_eq!(error,ClientError::HttpStatus(401));
+    assert!(!format!("{error:?}").contains("PRIVATE"));
 }
 #[test]
 fn invalid_json_mime_duplicate_keys_and_size_are_refused() {
