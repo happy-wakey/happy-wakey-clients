@@ -276,10 +276,13 @@ pub struct Response {
     pub content_type: String,
     pub bytes: Vec<u8>,
 }
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct TransportError;
+
 pub trait Transport {
     /// Must reject redirects, enforce TLS/DNS/egress restrictions, timeouts and size caps
     /// before buffering the response. Returning a complete Response is not sufficient.
-    fn exchange(&mut self, request: &RequestPlan) -> Result<Response, ()>;
+    fn exchange(&mut self, request: &RequestPlan) -> Result<Response, TransportError>;
 }
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct TelemetryRecord {
@@ -342,7 +345,7 @@ pub fn execute<T: Transport, L: Telemetry>(
     let started = Instant::now();
     let mut status = 0u16;
     let result = match transport.exchange(plan) {
-        Err(()) => Err(ClientError::Network),
+        Err(_) => Err(ClientError::Network),
         Ok(reply) => {
             status = reply.status;
             if (300..400).contains(&status) {
