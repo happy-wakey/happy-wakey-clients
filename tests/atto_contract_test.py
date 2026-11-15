@@ -19,10 +19,30 @@ PATH_FUNCTIONS = {
 
 def body_of(source: str, name: str, args: str = "") -> str:
     signature = rf"^pub fnc {re.escape(name)}\({re.escape(args)}\): (?:string|bool)\s*\{{"
-    match = re.search(signature + r"(.*?)^\}", source, re.M | re.S)
+    match = re.search(signature, source, re.M)
     if match is None:
         raise ValueError(f"missing Atto function: {name}")
-    return match.group(1)
+    # Match the first closing brace outside quoted route templates; avoid
+    # mistaking the {occurrence_id} literal for a function-body delimiter.
+    in_string = False
+    escaped = False
+    depth = 1
+    start = match.end()
+    for index in range(start, len(source)):
+        char = source[index]
+        if in_string and char == "\\" and not escaped:
+            escaped = True
+            continue
+        if char == '"' and not escaped:
+            in_string = not in_string
+        elif not in_string and char == "{":
+            depth += 1
+        elif not in_string and char == "}":
+            depth -= 1
+            if depth == 0:
+                return source[start:index]
+        escaped = False
+    raise ValueError(f"unclosed Atto function: {name}")
 
 
 def literal_return(body: str) -> str:
