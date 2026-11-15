@@ -1,6 +1,6 @@
 use happy_wakey_atto_host_contract::{
     execute, operations, plan_request, validated_origin, Call, ClientError,
-    RequestPlan, Response, Telemetry, TelemetryRecord, Transport,
+    RequestPlan, Response, Telemetry, TelemetryRecord, Transport, TransportError,
     MAX_REQUEST_BYTES, MAX_RESPONSE_BYTES, TELEMETRY_EVENT,
 };
 use serde_json::{json, Value};
@@ -15,12 +15,12 @@ struct FakeTransport {
     fail: bool,
 }
 impl Transport for FakeTransport {
-    fn exchange(&mut self, p: &RequestPlan) -> Result<Response, ()> {
+    fn exchange(&mut self, p: &RequestPlan) -> Result<Response, TransportError> {
         self.exchanges += 1;
         self.last_url = Some(p.url.to_string());
         self.last_method = Some(p.method.into());
         self.last_authorization = p.headers.get("Authorization").cloned();
-        if self.fail { return Err(()); }
+        if self.fail { return Err(TransportError); }
         Ok(self.reply.take().unwrap_or(Response {
             status: 200, content_type: "application/json".into(), bytes: b"{\"ok\":true}".to_vec(),
         }))
