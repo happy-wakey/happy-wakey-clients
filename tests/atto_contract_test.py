@@ -67,6 +67,12 @@ def verify_atto(source: str, operations: list[dict]) -> None:
     admitted = re.findall(r'if operation eq "([^"]+)" then return true; fi', known)
     if admitted != [op["id"] for op in operations] or "return false;" not in known:
         raise ValueError("known-operation allowlist drift")
+    methods = body_of(source, "operation_method", "string operation")
+    method_pairs = re.findall(r'if operation eq "([^"]+)" then return "(GET|POST)"; fi', methods)
+    if method_pairs != [(op["id"], op["method"]) for op in operations]:
+        raise ValueError("HTTP method drift")
+    if not methods.rstrip().endswith('return "";'):
+        raise ValueError("unknown operation must not have an HTTP method")
     auth = body_of(source, "requires_bearer", "string operation")
     if not re.fullmatch(r'\s*if operation eq "health" then return false; fi\s*return true;\s*', auth):
         raise ValueError("bearer fail-closed policy drift")
