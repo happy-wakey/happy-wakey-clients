@@ -16,7 +16,7 @@ request bodies. Unknown operations must be rejected **before** querying
 its `{occurrence_id}` placeholder is encoded and replaced.
 
 Run `python3 scripts/validate_matrix.py` and
-`python3 -m unittest discover -s tests -p '*_test.py'` from the repository
+`cargo test --manifest-path clients/rust/Cargo.toml --test atto_contract` from the repository
 root. They compare the Atto source against the pinned operation contract and
 exercise negative drift cases. These are **host-side static conformance tests**,
 not guest compilation or execution. No end-to-end Atto runtime support is
