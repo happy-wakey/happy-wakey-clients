@@ -28,7 +28,7 @@ operation_tokens = {
     "pushChanges": ("pushChanges", "push_changes"),
 }
 
-assert len(matrix["targets"]) >= 17
+assert len(matrix["targets"]) >= 18
 for name, (directory, manifest, source) in matrix["targets"].items():
     package = repo_local_path(directory)
     assert repo_local_path(str(Path(directory) / manifest)).is_file(), f"{name}: missing {manifest}"

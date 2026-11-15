@@ -1,13 +1,14 @@
 # happy-wakey-clients
 
 Official contract-first clients for the Happy Wakey JSON API. The repository
-ships 17 package slices across 16 programming languages plus four TypeScript
+ships 18 package slices across 17 programming languages plus four TypeScript
 runtimes. Every slice exposes the same six OpenAPI operations and carries
 telemetry through the [`ores-otel/ores.otel.log`](https://github.com/ores-otel/ores.otel.log)
 `next-loggers/v1` contract.
 
 | Language | Package path | Transport |
 | --- | --- | --- |
+| AttoLang | `clients/atto` | Pure request metadata (host adapter required) |
 | C | `clients/c` | injected native HTTP callback |
 | C++ | `clients/cpp` | injected native HTTP callback |
 | Zig | `clients/zig` | injected native HTTP callback |
@@ -60,3 +61,7 @@ transformations with explicit typed inputs and results. Effects stay inside the
 HTTP/Ores adapter. Its optional RxJS API exposes cold request streams and
 non-overlapping `exhaustMap` polling with explicit `AbortSignal` cancellation;
 it never stores bearer credentials or application state in a Subject.
+
+The AttoLang slice is source-level operation metadata and contract drift tests,
+not a compiled HTTP transport. See `clients/atto/README.md` for its explicit
+host-adapter safety requirements and validation boundaries.
