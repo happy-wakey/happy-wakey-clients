@@ -26,6 +26,17 @@ pub fnc is_known_operation(string operation): bool {
     return false;
 }
 
+// Return an empty method for an unknown ID; the adapter must reject it.
+pub fnc operation_method(string operation): string {
+    if operation eq "health" then return "GET"; fi
+    if operation eq "listAlarms" then return "GET"; fi
+    if operation eq "createAlarm" then return "POST"; fi
+    if operation eq "transitionOccurrence" then return "POST"; fi
+    if operation eq "pullChanges" then return "GET"; fi
+    if operation eq "pushChanges" then return "POST"; fi
+    return "";
+}
+
 // Always check is_known_operation first. Unknown operations must not be dispatched.
 pub fnc requires_bearer(string operation): bool {
     if operation eq "health" then return false; fi
