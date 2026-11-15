@@ -1,7 +1,7 @@
 // Pure AttoLang request metadata for the Happy Wakey HTTP API.
 // The host must provide an HTTPS transport, JSON validation, auth and telemetry.
 // This file is not a network implementation, URL encoder, or bearer store.
-// Operation ids and routes are pinned by tests/atto_contract_test.py.
+// Operation ids and routes are pinned by clients/rust/tests/atto_contract.rs.
 
 pub fnc health_path(): string { return "/healthz"; }
 pub fnc list_alarms_path(): string { return "/v1/alarms"; }
