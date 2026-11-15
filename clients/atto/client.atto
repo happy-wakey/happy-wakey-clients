@@ -1,0 +1,36 @@
+// Pure AttoLang request metadata for the Happy Wakey HTTP API.
+// The host must provide an HTTPS transport, JSON validation, auth and telemetry.
+// This file is not a network implementation, URL encoder, or bearer store.
+// Operation ids and routes are pinned by tests/atto_contract_test.py.
+
+pub fnc health_path(): string { return "/healthz"; }
+pub fnc list_alarms_path(): string { return "/v1/alarms"; }
+pub fnc create_alarm_path(): string { return "/v1/alarms"; }
+
+// A route TEMPLATE: the transport must percent-encode occurrence_id as one path segment.
+pub fnc transition_occurrence_path_template(): string {
+    return "/v1/occurrences/{occurrence_id}/transitions";
+}
+
+pub fnc pull_changes_path(): string { return "/v1/sync/pull"; }
+pub fnc push_changes_path(): string { return "/v1/sync/push"; }
+
+// Only the six contract operation ids are admitted. Reject others before dispatch.
+pub fnc is_known_operation(string operation): bool {
+    if operation eq "health" then return true; fi
+    if operation eq "listAlarms" then return true; fi
+    if operation eq "createAlarm" then return true; fi
+    if operation eq "transitionOccurrence" then return true; fi
+    if operation eq "pullChanges" then return true; fi
+    if operation eq "pushChanges" then return true; fi
+    return false;
+}
+
+// Always check is_known_operation first. Unknown operations must not be dispatched.
+pub fnc requires_bearer(string operation): bool {
+    if operation eq "health" then return false; fi
+    return true;
+}
+
+pub fnc bearer_header_name(): string { return "Authorization"; }
+pub fnc telemetry_event_name(): string { return "happy_wakey.client.request"; }
